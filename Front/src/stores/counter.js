@@ -1,12 +1,13 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import axios from 'axios';
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
+export const config_data = defineStore('config_data', () => {
+    const api_url = ref("http://127.0.0.1:8000")
 
-  return { count, doubleCount, increment }
+    function get_api_url(){
+        return api_url.value
+    }
+
+    return { get_api_url }
 })

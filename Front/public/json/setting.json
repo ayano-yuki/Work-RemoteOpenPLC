@@ -1,0 +1,22 @@
+[
+    {
+        "Name": "Example Name",
+        "Address": 123,
+        "Max": 100,
+        "Min": 0,
+        "Unit": "unit",
+        "Division": 1,
+        "Multiplication": 2,
+        "Graph": "x"
+    },
+    {
+        "Name": "Another Example",
+        "Address": 456,
+        "Max": 200,
+        "Min": 50,
+        "Unit": "unit",
+        "Division": 3,
+        "Multiplication": 4,
+        "Graph": "y"
+    }
+]
