@@ -1,36 +1,27 @@
 <template>
-    <div class="buttonIconText" @click="nextPage()">
+    <div class="buttonIconText" @click="modeChange()">
         <span class="buttonIconText_icon">
-            <img width="32" height="32" viewBox="0 0 24 24" :src="svg_path">
+            <img width="32" height="32" viewBox="0 0 24 24" :src="path[experiment.now_mode() ? 0 : 1]">
         </span>
-        <span class="buttonIconText_text">{{ props.name }}</span>
+        <span class="buttonIconText_text">{{ name[experiment.now_mode() ? 0 : 1] }}</span>
     </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
+import { controller_experiment } from '@/stores/counter';
 
-const router = useRouter()
-const props = defineProps(['name', 'path', 'next'])
-const svg_path = ref("")
+const experiment = controller_experiment();
+const name = ref(["STOP", "START"]);
+const path = ref(["/svg/stop.svg", "/svg/start.svg"]);
 
-const nextPage = () => {
-    if (props.next === undefined) {
-        alert("Undefined Pages Error: Please contact the developer")
+const modeChange = () => {
+    if (experiment.now_mode()) {
+        experiment.stop_experiment();
     } else {
-        router.push(props.next)
+        experiment.start_experiment();
     }
-}
-
-onMounted(async () => {
-    svg_path.value = props.path
-    if (props.path === undefined) {
-        console.log(123)
-        svg_path.value = "/svg/undefined.svg"
-    }
-});
-
+};
 </script>
 
 <style scoped>
