@@ -21,7 +21,8 @@
 	<div id="buttons">
 		<div id="contens-center">
 			<RunController></RunController>
-			<!-- <ResultController></ResultController> -->
+			<GeneratorButton></GeneratorButton>
+			<ResultController></ResultController>
 		</div>
 	</div>
 
@@ -32,6 +33,8 @@ import TopicPath from '@/components/TopicPath.vue';
 import LineGraph from '@/components/graph/LineGraph.vue';
 import GaugeGraph from '@/components/graph/GaugeGraph.vue';
 import RunController from '@/components/button/RunController.vue'
+import ResultController from '@/components/button/ResultController.vue'
+import GeneratorButton from '@/components/button/GeneratorButton.vue'
 import { config_data, controller_experiment } from '@/stores/counter'
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
@@ -50,6 +53,21 @@ onMounted(async () => {
 	}
 });
 
+
+setInterval(async () => {
+	if (experiment.now_mode()) {
+		try {
+			const res = await axios.get(config_data().get_api_url() + "/get_experiment_result");
+			for (var i in forms.value) {
+				var push_data = res.data.result[Number(forms.value[i]["Address"])] * Number(forms.value[i]["Multiplication"]) / Number(forms.value[i]["Division"])
+				experiment.push_result(forms.value[i]["Name"], push_data)
+			}
+
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	}
+}, clock.value);
 </script>
 
 <style scoped>

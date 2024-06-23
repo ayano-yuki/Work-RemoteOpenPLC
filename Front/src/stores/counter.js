@@ -13,6 +13,7 @@ export const config_data = defineStore('config_data', () => {
 })
 
 export const controller_experiment = defineStore('controller_experiment', () => {
+    const config = config_data()
     const flag_run_mode   = ref(false)
     const flag_reset   = ref(true)
     const result = ref({})
@@ -26,12 +27,79 @@ export const controller_experiment = defineStore('controller_experiment', () => 
     }
 
     async function start_experiment() {
-        flag_run_mode.value = true
-        flag_reset.value = false
+        try {
+            const res = await axios.post(
+                config.get_api_url() + "/start_experiment",
+                "",
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 5000
+                }
+            );
+            flag_run_mode.value = true
+            flag_reset.value = false
+
+        } catch (error) {
+            flag_run_mode.value = true
+            console.error('Error fetching data:', error);
+        }
    }
 
     async function stop_experiment() {
-        flag_run_mode.value = false
+        try {
+            const res = await axios.post(
+                config.get_api_url() + "/stop_experiment",
+                "",
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 5000
+                }
+            );
+            flag_run_mode.value = false
+            save_result()
+
+        } catch (error) {
+            flag_run_mode.value = false
+            console.error('Error fetching data:', error);
+        }   
+    }
+
+    async function save_result(){
+        const response = await fetch("../../public/json/setting.json")
+        const setting_data = await response.json();
+        const output = ref([])
+        
+        for (var key in result.value){
+            for (var i in setting_data){
+                if (key == setting_data[i]["Name"]){
+                    output.value.push({
+                        Name:key, 
+                        Data:result.value[key], 
+                        Graph:setting_data[i]["Graph"]
+                    })
+                }
+            }
+        } 
+
+        const jsonData = JSON.stringify(output.value, null, 2);
+        try {
+            const res = await axios.post(
+                config_data().get_api_url() + "/save_result",
+                jsonData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 5000
+                }
+            );
+        } catch (error) {
+            console.error('Error saving data:', error);
+        }
     }
 
     function create_dict(name) {
@@ -43,11 +111,10 @@ export const controller_experiment = defineStore('controller_experiment', () => 
             result.value[name] = []
         }
 
-        console.log(name, result.value)
         result.value[name].push(newResult)
     }
 
-    function clear_result() {
+    async function clear_result() {
         for (var key in result.value){
             result.value[key] = []
         }
