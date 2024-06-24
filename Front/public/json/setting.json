@@ -1,12 +1,22 @@
 [
     {
         "Name": "ExampleName",
-        "Address": 123,
-        "Max": 100,
+        "Address": 0,
+        "Max": 500,
         "Min": 0,
         "Unit": "unit",
+        "Division": 2,
+        "Multiplication": 1,
+        "Graph": "x"
+    },
+    {
+        "Name": "ExampleName123",
+        "Address": 0,
+        "Max": 1000,
+        "Min": 0,
+        "Unit": "aisu",
         "Division": 1,
         "Multiplication": 2,
-        "Graph": "none"
+        "Graph": "y"
     }
 ]

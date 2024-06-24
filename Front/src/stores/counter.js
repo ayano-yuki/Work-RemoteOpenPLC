@@ -5,7 +5,7 @@ import axios from 'axios';
 export const config_data = defineStore('config_data', () => {
     const api_url = ref("http://127.0.0.1:8000")
 
-    function get_api_url(){
+    function get_api_url() {
         return api_url.value
     }
 
@@ -14,15 +14,15 @@ export const config_data = defineStore('config_data', () => {
 
 export const controller_experiment = defineStore('controller_experiment', () => {
     const config = config_data()
-    const flag_run_mode   = ref(false)
-    const flag_reset   = ref(true)
+    const flag_run_mode = ref(false)
+    const flag_reset = ref(true)
     const result = ref({})
 
-    function now_mode(){
+    function now_mode() {
         return flag_run_mode.value
     }
 
-    function is_reset(){
+    function is_reset() {
         return flag_reset.value
     }
 
@@ -42,10 +42,9 @@ export const controller_experiment = defineStore('controller_experiment', () => 
             flag_reset.value = false
 
         } catch (error) {
-            flag_run_mode.value = true
             console.error('Error fetching data:', error);
         }
-   }
+    }
 
     async function stop_experiment() {
         try {
@@ -63,27 +62,26 @@ export const controller_experiment = defineStore('controller_experiment', () => 
             save_result()
 
         } catch (error) {
-            flag_run_mode.value = false
             console.error('Error fetching data:', error);
-        }   
+        }
     }
 
-    async function save_result(){
+    async function save_result() {
         const response = await fetch("../../public/json/setting.json")
         const setting_data = await response.json();
         const output = ref([])
-        
-        for (var key in result.value){
-            for (var i in setting_data){
-                if (key == setting_data[i]["Name"]){
+
+        for (var key in result.value) {
+            for (var i in setting_data) {
+                if (key == setting_data[i]["Name"]) {
                     output.value.push({
-                        Name:key, 
-                        Data:result.value[key], 
-                        Graph:setting_data[i]["Graph"]
+                        Name: key,
+                        Data: result.value[key],
+                        Graph: setting_data[i]["Graph"]
                     })
                 }
             }
-        } 
+        }
 
         const jsonData = JSON.stringify(output.value, null, 2);
         try {
@@ -107,7 +105,7 @@ export const controller_experiment = defineStore('controller_experiment', () => 
     }
 
     function push_result(name, newResult) {
-        if ( !(name in result.value) ) {
+        if (!(name in result.value)) {
             result.value[name] = []
         }
 
@@ -115,18 +113,49 @@ export const controller_experiment = defineStore('controller_experiment', () => 
     }
 
     async function clear_result() {
-        for (var key in result.value){
-            result.value[key] = []
+        if (!now_mode()) {
+            for (var key in result.value) {
+                result.value[key] = []
+            }
+            flag_reset.value = true
+            download_result()
         }
-        flag_reset.value = true
+        else {
+            alert("please stop experiment.")
+        }
+
     }
 
-    function get_result_list(name){
+    function download_result() {
+        fetch('../../public/json/result.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'experiment_result.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    function get_result_list(name) {
         return result.value[name]
     }
 
-    function get_result_latest(name){
-        if ( !(name in result.value) ) {
+    function get_result_latest(name) {
+        if (!(name in result.value)) {
             return 0
         }
         else {
@@ -134,9 +163,9 @@ export const controller_experiment = defineStore('controller_experiment', () => 
         }
     }
 
-    return { 
+    return {
         result,
         start_experiment, stop_experiment, now_mode, is_reset,
-        create_dict, push_result, clear_result, get_result_list, get_result_latest, 
+        create_dict, push_result, clear_result, get_result_list, get_result_latest,
     }
 })

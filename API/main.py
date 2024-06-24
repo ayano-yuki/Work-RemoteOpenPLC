@@ -116,7 +116,6 @@ def save_result(datas:list[Result]):
     Save the received information in json format
     - **datas** post data  
     """
-    print(datas)
     save_data = []
     for data in datas:
         save_data.append({
