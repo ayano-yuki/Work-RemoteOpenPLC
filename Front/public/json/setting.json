@@ -1,22 +1,22 @@
 [
     {
-        "Name": "Example Name",
-        "Address": 123,
-        "Max": 100,
+        "Name": "ExampleName",
+        "Address": 0,
+        "Max": 500,
         "Min": 0,
         "Unit": "unit",
-        "Division": 1,
-        "Multiplication": 2,
+        "Division": 2,
+        "Multiplication": 1,
         "Graph": "x"
     },
     {
-        "Name": "Another Example",
-        "Address": 456,
-        "Max": 200,
-        "Min": 50,
-        "Unit": "unit",
-        "Division": 3,
-        "Multiplication": 4,
+        "Name": "ExampleName123",
+        "Address": 0,
+        "Max": 1000,
+        "Min": 0,
+        "Unit": "aisu",
+        "Division": 1,
+        "Multiplication": 2,
         "Graph": "y"
     }
 ]

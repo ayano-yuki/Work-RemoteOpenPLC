@@ -1,36 +1,18 @@
 <template>
-    <div class="buttonIconText" @click="nextPage()">
+    <div class="buttonIconText" @click="test()">
         <span class="buttonIconText_icon">
-            <img width="32" height="32" viewBox="0 0 24 24" :src="svg_path">
+            <img width="32" height="32" viewBox="0 0 24 24" :src="'../../../public/svg/generator.svg'">
         </span>
-        <span class="buttonIconText_text">{{ props.name }}</span>
+        <span class="buttonIconText_text">Generator</span>
     </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
-const router = useRouter()
-const props = defineProps(['name', 'path', 'next'])
-const svg_path = ref("")
-
-const nextPage = () => {
-    if (props.next === undefined) {
-        alert("Undefined Pages Error: Please contact the developer")
-    } else {
-        router.push(props.next)
-    }
+const test = () => {
+    window.open("/generator", '_blank', 'location=no, scrollbars=no, width=900, height=600')
 }
-
-onMounted(async () => {
-    svg_path.value = props.path
-    if (props.path === undefined) {
-        console.log(123)
-        svg_path.value = "/svg/undefined.svg"
-    }
-});
-
 </script>
 
 <style scoped>

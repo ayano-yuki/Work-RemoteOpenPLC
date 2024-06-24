@@ -3,8 +3,8 @@
   <div id="str-title"> Remote OpenPLC</div>
   
   <div id="contens-center">
-      <HomeButton name="Setting" path='../../public/svg/setting.svg' next="setting"></HomeButton>
-      <HomeButton name="Run OpenPLC" path='../../public/svg/running.svg' next="running"></HomeButton>
+      <HomeButton name="Setting" path='/svg/setting.svg' next="setting"></HomeButton>
+      <HomeButton name="Run OpenPLC" path='/svg/running.svg' next="running"></HomeButton>
   </div>
 </template>
 
