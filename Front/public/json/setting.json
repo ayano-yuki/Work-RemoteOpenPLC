@@ -1,12 +1,22 @@
 [
     {
-        "Name": "ExampleName",
-        "Address": 123,
-        "Max": 100,
-        "Min": 0,
-        "Unit": "unit",
-        "Division": 1,
-        "Multiplication": 2,
-        "Graph": "none"
+        "Name": "\u754c\u78c1\u96fb\u6d41 Ifg",
+        "Address": 1,
+        "Max": 16.0,
+        "Min": 0.0,
+        "Unit": "V",
+        "Division": 5290,
+        "Multiplication": 1,
+        "Graph": "x"
+    },
+    {
+        "Name": "\u8a98\u8d77\u96fb\u5727 E0",
+        "Address": 2,
+        "Max": 300.0,
+        "Min": 0.0,
+        "Unit": "A",
+        "Division": 210,
+        "Multiplication": 1,
+        "Graph": "y"
     }
 ]

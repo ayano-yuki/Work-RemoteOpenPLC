@@ -8,7 +8,7 @@ import time
 import json
 from time import sleep
 from serial.tools import list_ports
-from pymodbus.client import ModbusTcpClient as ModbusClient
+from pymodbus.client import ModbusSerialClient as ModbusClient
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi import FastAPI, BackgroundTasks
@@ -19,10 +19,16 @@ camera_index = 0
 state        = "waiting"
 result       = []
 
-# 接続するデバイスのIPアドレスとポート番号を指定します。
-IP_ADDRESS = '127.0.0.1'
-PORT = 502
-client = ModbusClient(host=IP_ADDRESS, port=PORT, timeout=0.1)
+# Establishing modbus RTU communication
+device_port = []
+check_list = ["Arduino", "Raspberry", "ESP32", "tty"]
+for info in list_ports.comports():
+    for item in check_list:
+        if item in info.description:
+            device_port.append(info.device)
+
+print(f"COM port connected to microcontroller : {device_port[0]}")
+client = ModbusClient(method = "rtu", port=device_port[0], baudrate= 115200, timeout=0.1)
 client.connect()
 sleep(1.6)
 
@@ -49,9 +55,8 @@ def process_in_background():
 
         while True:
             if state == "processing":
-                rr = client.read_holding_registers(address=100, count=20, slave=1)
+                rr = client.read_holding_registers(address=0, count=20, slave=1)
                 result = rr.registers
-                # print(result)
                 sleep( 10 / 1000 )
 
             else:

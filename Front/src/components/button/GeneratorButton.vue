@@ -11,8 +11,7 @@
 import { ref } from 'vue';
 
 const test = () => {
-    // window.open("/generator", '_blank', 'location=no, scrollbars=no, width=900, height=600')
-    alert(123)
+    window.open("/generator", '_blank', 'location=no, scrollbars=no, width=900, height=600')
 }
 </script>
 

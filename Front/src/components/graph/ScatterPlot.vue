@@ -6,80 +6,90 @@
 
 <script setup>
 import { ref, onMounted, defineProps } from 'vue';
-
 import Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import Stock from 'highcharts/modules/stock';
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display';
 
-import { controller_experiment } from '@/stores/counter'
-
 HighchartsMore(Highcharts);
 Stock(Highcharts);
 NoDataToDisplay(Highcharts);
 
-const props = defineProps(['name', 'max', 'min', 'unit', 'numDataPoints']);
+const props = defineProps({
+    name_x: { type: String, required: true },
+    unit_x: { type: String, required: false, default: '' },
+    data_x: { type: Array, required: true },
+    name_y: { type: String, required: true },
+    unit_y: { type: String, required: false, default: '' },
+    data_y: { type: Array, required: true }
+});
+
 const chartContainer = ref(null);
-const experiment = controller_experiment();
 
 const showChart = () => {
-    const createChart = (container, yAxisOptions, seriesOptions) => {
+    const createChart = (container, seriesOptions, x_name, y_name) => {
         return Highcharts.chart(container, {
             chart: {
-                type: 'line', // Set the chart type to 'line'
-                backgroundColor: '#fafafa',
-            },
-            chart: {
+                type: 'scatter',
                 zooming: {
                     type: 'xy'
-                }
+                },
+                backgroundColor: '#fafafa'
             },
-            title: null,
+            title: {
+                text: `${x_name} × ${y_name}`
+            },
             yAxis: {
                 title: {
-                    text: props.name,
+                    text: y_name
                 },
-                min: Number(props.min),
-                max: Number(props.max),
             },
-            series: [{
-                name: props.name,
-                data: [0],
-            }],
+            xAxis: {
+                title: {
+                    text: x_name
+                },
+                startOnTick: true,
+                endOnTick: true,
+                showLastLabel: true
+            },
             tooltip: {
-                valueSuffix: " " + props.unit,
+                pointFormat: `${x_name}: {point.x} ${props.unit_x} <br/> ${y_name}: {point.y} ${props.unit_y}`
             },
             exporting: {
-                enabled: false,
+                enabled: false
             },
+            series: seriesOptions
         });
     };
 
-    const targetChart = createChart(chartContainer.value, {
-        title: {
-            text: props.name,
-        },
-    });
-
-    setInterval(() => {
-        if (experiment.now_mode()) {
-            if (experiment.get_result_list(props.name)) {
-                const resultData = experiment.get_result_list(props.name);
-                targetChart.series[0].setData(resultData, true, true);
-
-                // if (resultData.length < props.numDataPoints) {
-                //     targetChart.series[0].setData(resultData, true, true);
-                // } else {
-                //     const newData = resultData.slice(-props.numDataPoints);
-                //     targetChart.series[0].setData(newData, true, true);
-                // }
+    const seriesOptions = [{
+        data: [],
+        marker: {
+            radius: 2.5,
+            symbol: 'circle',
+            states: {
+                hover: {
+                    enabled: true,
+                    lineColor: 'rgb(100,100,100)'
+                }
             }
+        },
+        states: {
+            hover: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        jitter: {
+            x: 0.005
         }
+    }];
 
-        else if (experiment.is_reset()){
-            targetChart.series[0].setData([0], true);
-        }
-    }, 1);
+    const newData = props.data_x.map((x, i) => [x, props.data_y[i]]);
+    seriesOptions[0].data = newData;
+
+    createChart(chartContainer.value, seriesOptions, props.name_x, props.name_y);
 };
 
 onMounted(() => {
@@ -91,8 +101,9 @@ onMounted(() => {
 
 <style scoped>
 .highcharts-figure .chart-container {
-    width: 300px;
-    height: 200px;
+    width: 100%;
+    max-height: 30%;
+    aspect-ratio: 2 / 1;
 }
 
 .highcharts-data-table table {
