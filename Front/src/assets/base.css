@@ -1,0 +1,32 @@
+/* main color */
+:root{
+  --color-red: red;
+}
+
+/* TopicPath */
+:root{
+  --color-open-link: black;
+  --color-close-link: blue;
+}
+
+/* HomeButton RunController*/
+:root{
+  --color-button-background: #f0b5a4;
+  --color-button-hover: #ee7785;
+  --color-button-text: #0f0f0f;
+  --color-button-icon: #fff;
+}
+
+/* Running */
+:root{
+  --color-camera-background: #84b1ed;
+  --color-box-border: #5d627b;
+  --color-box-shadow: rgba(0, 0, 0, 0.22)
+}
+
+/* LineGraph GaugeGraph */
+:root{
+  --color-graph-text: #555;
+  --color-graph-border: #ebebeb;
+  --color-graph-background: #f8f8f8;
+}

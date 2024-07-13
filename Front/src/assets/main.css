@@ -1,0 +1,37 @@
+@import "./base.css";
+
+* {
+  user-select: none;
+}
+
+body,
+html {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#image-wallpaper {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  margin: 0;
+  z-index: -1;
+}
+
+#str-title {
+  margin-top: 1%;
+  font-size: 3em;
+  text-align: center;
+}
+
+#topicpath {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
