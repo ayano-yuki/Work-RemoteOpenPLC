@@ -65,13 +65,14 @@ const showChart = () => {
         if (experiment.now_mode()) {
             if (experiment.get_result_list(props.name)) {
                 const resultData = experiment.get_result_list(props.name);
+                targetChart.series[0].setData(resultData, true, true);
 
-                if (resultData.length < props.numDataPoints) {
-                    targetChart.series[0].setData(resultData, true, true);
-                } else {
-                    const newData = resultData.slice(-props.numDataPoints);
-                    targetChart.series[0].setData(newData, true, true);
-                }
+                // if (resultData.length < props.numDataPoints) {
+                //     targetChart.series[0].setData(resultData, true, true);
+                // } else {
+                //     const newData = resultData.slice(-props.numDataPoints);
+                //     targetChart.series[0].setData(newData, true, true);
+                // }
             }
         }
 
