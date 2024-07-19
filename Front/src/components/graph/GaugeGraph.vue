@@ -66,6 +66,7 @@ const showChart = () => {
             },
             labels: {
                 y: 16,
+            	format: '{value:.2f}', // 小数点以下３桁にフォーマットする
             },
         },
         plotOptions: {
@@ -90,7 +91,7 @@ const showChart = () => {
         data: [experiment.get_result_latest(props.name)],
         dataLabels: {
             format: '<div style="text-align:center">' +
-                '<span style="font-size:25px">{y:.1f}</span><br/>' +
+                '<span style="font-size:25px">{y:.2f}</span><br/>' +
                 '<span style="font-size:12px;opacity:0.4">' +
                 props.unit +
                 '</span>' +
