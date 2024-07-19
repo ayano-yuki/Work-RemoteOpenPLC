@@ -43,6 +43,9 @@ const showChart = () => {
                 title: {
                     text: y_name
                 },
+                labels: {
+                    format: '{value:.2f}'
+                },
             },
             xAxis: {
                 title: {
@@ -50,7 +53,10 @@ const showChart = () => {
                 },
                 startOnTick: true,
                 endOnTick: true,
-                showLastLabel: true
+                showLastLabel: true,
+                labels: {
+                    format: '{value:.2f}'
+                },
             },
             tooltip: {
                 pointFormat: `${x_name}: {point.x} ${props.unit_x} <br/> ${y_name}: {point.y} ${props.unit_y}`
