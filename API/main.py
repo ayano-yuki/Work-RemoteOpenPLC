@@ -62,6 +62,24 @@ def process_in_background():
                 print(rr.bits)
                 break
 
+def generate_frame(id = 0):
+    global camera_index
+
+    capture = cv2.VideoCapture(id)
+    camera_index += 1
+
+    while True:
+        if not capture.isOpened():
+            camera_index -= 1
+            capture = cv2.VideoCapture( id % camera_index)
+        
+        _, frame = capture.read()
+        _, jpeg = cv2.imencode('.jpg', frame)
+        byte_frame = jpeg.tobytes()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + byte_frame + b'\r\n\r\n')
+    capture.release()
+
 # -----POST data format----------------------------------------------------------------------------------
 class Setting(BaseModel):
     Name:           str
@@ -79,6 +97,10 @@ class Result(BaseModel):
     Graph: str
 
 # -----API-----------------------------------------------------------------------------------------------
+@app.get("/video_feed/{camera_id}")
+def video_feed(camera_id: int = 0):
+    return StreamingResponse(generate_frame(camera_id), media_type='multipart/x-mixed-replace; boundary=frame')
+
 @app.post("/save_setting", response_description='response', tags=['Setting'])
 def save_setting(datas:list[Setting]):
     """

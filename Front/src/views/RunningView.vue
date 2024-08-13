@@ -3,18 +3,18 @@
 	<div id="str-title"> Running </div>
 
 	<div>
-		<img class="camera" @click="" />
+		<img class="camera" :src="imageUrl" @click="handleImageClick" />
 	</div>
 
 	<div class="gauge-container">
-		<GaugeGraph v-for="(form, index) in forms" :key="index" :name=form.Name :max=form.Max
-			:min=form.Min :unit=form.Unit>
+		<GaugeGraph v-for="(form, index) in forms" :key="index" :name=form.Name :max=form.Max :min=form.Min
+			:unit=form.Unit>
 		</GaugeGraph>
 	</div>
 
 	<div class="line-container">
-		<LineGraph v-for="(form, index) in forms" :key="index" :name=form.Name :max=form.Max
-			:min=form.Min :unit=form.Unit :numDataPoints="30">
+		<LineGraph v-for="(form, index) in forms" :key="index" :name=form.Name :max=form.Max :min=form.Min
+			:unit=form.Unit :numDataPoints="30">
 		</LineGraph>
 	</div>
 
@@ -36,12 +36,13 @@ import RunController from '@/components/button/RunController.vue'
 import ResultController from '@/components/button/ResultController.vue'
 import GeneratorButton from '@/components/button/GeneratorButton.vue'
 import { config_data, controller_experiment } from '@/stores/counter'
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed  } from 'vue';
 import axios from 'axios';
 
 const experiment = controller_experiment();
 const forms = ref([]);
 const clock = ref(100);
+const cameraIndex = ref(0);
 
 onMounted(async () => {
 	try {
@@ -68,6 +69,14 @@ setInterval(async () => {
 		}
 	}
 }, clock.value);
+
+const imageUrl = computed(() => {
+  return config_data().get_api_url() + '/video_feed/' + cameraIndex.value;
+});
+
+const handleImageClick = () => {
+  cameraIndex.value++;
+};
 </script>
 
 <style scoped>
