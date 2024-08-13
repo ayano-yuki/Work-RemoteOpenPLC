@@ -3,11 +3,8 @@ import os
 os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
 
 import cv2
-import random
-import time
 import json
 from time import sleep
-from serial.tools import list_ports
 from pymodbus.client import ModbusTcpClient as ModbusClient
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
