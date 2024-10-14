@@ -1,3 +1,8 @@
+"""
+実験で使用するレジデンスとコイルを検索するプログラム
+PLCプログラムが動作しているタイミングで実行してください
+"""
+
 from pymodbus.client import ModbusTcpClient as ModbusClient
 from time import sleep
 
