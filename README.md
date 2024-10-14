@@ -97,6 +97,6 @@ Windows/Linux系列のインストール方法を示します。
 
 ## その他
 - 連絡が取りたい方は、issueか、Twitter(現X)までご連絡ください。または、先生経由からご連絡ください。
-  - Twitter(現X)：@__ayanoYuki__
+  - Twitter(現X)：```@__ayanoYuki__```
 - 2024/10時点で分かっている課題点・展望はissueに書いています。
 - OpenPLCや、modbus通信をまとめた記事を執筆予定です。執筆後はココに掲載します。
